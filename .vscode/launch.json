@@ -2,16 +2,13 @@
   "version": "0.2.0",
   "configurations": [
     {
-      "name": "Build & Run",
-      "type": "cppvsdbg",
+      "type": "gdb",
       "request": "launch",
-      "program": "${workspaceRoot}/zig-out/bin/main.exe",
+      "name": "Launch Program",
+      "target": "./zig-out/bin/main",
       "cwd": "${workspaceRoot}",
-      "logging": {
-        "moduleLoad": false,
-      },
+      "valuesFormatting": "parseText",
       "preLaunchTask": "build",
-      "console": "internalConsole",
       "internalConsoleOptions": "openOnSessionStart",
     },
   ]

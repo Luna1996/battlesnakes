@@ -1,5 +1,7 @@
 const std = @import("std");
 
 pub fn main() !void {
-  std.debug.print("Battle Snakes\n", .{});
+  const out = std.io.getStdOut();
+  const wrt = out.writer();
+  try wrt.print("Battle Snakes\n", .{});
 }

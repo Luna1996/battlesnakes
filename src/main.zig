@@ -1,7 +1,7 @@
 const std = @import("std");
 
+pub usingnamespace @import("logs.zig");
+
 pub fn main() !void {
-  const out = std.io.getStdOut();
-  const wrt = out.writer();
-  try wrt.print("Battle Snakes\n", .{});
+  std.log.info("Battle Snakes\n", .{});
 }

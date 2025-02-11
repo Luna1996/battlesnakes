@@ -11,12 +11,12 @@ pub fn build(b: *std.Build) void {
     .root_source_file = b.path("src/main.zig"),
   });
 
-  const zap_dep = b.dependency("zap", .{
+  const http_dep = b.dependency("httpz", .{
     .target = target,
     .optimize = optimize,
   });
 
-  main_exe.root_module.addImport("zap", zap_dep.module("zap"));
+  main_exe.root_module.addImport("web", http_dep.module("httpz"));
 
   b.installArtifact(main_exe);
 }

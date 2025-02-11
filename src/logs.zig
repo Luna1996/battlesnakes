@@ -26,3 +26,28 @@ fn log(
       bw.flush() catch return;
   }
 }
+
+pub fn logErrorTrace() void {
+  const trace: ?*std.builtin.StackTrace = @errorReturnTrace();
+  if (trace == null) return;
+  nosuspend {
+    if (comptime std.builtin.target.isWasm()) {
+      if (std.debug.native_os == .wasi) {
+        std.log.err("Unable to dump stack trace: not implemented for Wasm", .{});
+      }
+      return;
+    }
+    if (std.builtin.strip_debug_info) {
+      std.log.err("Unable to dump stack trace: debug info stripped", .{});
+      return;
+    }
+    const debug_info = std.debug.getSelfDebugInfo() catch |err| {
+      std.log.err("Unable to dump stack trace: Unable to open debug info: {s}\n", .{@errorName(err)});
+      return;
+    };
+    std.debug.writeStackTrace(trace.?, std.io.getStdOut().writer(), debug_info, std.io.tty.detectConfig(std.io.getStdOut())) catch |err| {
+      std.log.err("Unable to dump stack trace: {s}\n", .{@errorName(err)});
+      return;
+    };
+  }
+}

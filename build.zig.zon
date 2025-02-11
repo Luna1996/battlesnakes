@@ -6,6 +6,10 @@
       .url = "git+https://github.com/zigzap/zap?ref=v0.9.1#ae5c9278335d8e1133cd6d22707323dda712e120",
       .hash = "12200223d76ab6cd32f75bc2e31463b0b429bb5b2b6fa4ce8f68dea494ca1ec3398b",
     },
+    .httpz = .{
+      .url = "git+https://github.com/karlseguin/http.zig?ref=master#f16b296a2772be97e48a57259c004aa6584a02c6",
+      .hash = "1220e524a72c18aa2585f326902066fda544c5df0cf6618eea885b04041204dc5d7f",
+    },
   },
   .paths = .{
     "src",

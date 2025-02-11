@@ -1,19 +1,26 @@
+const Self = @This();
+
 const std = @import("std");
-const zap = @import("zap");
+const web = @import("web");
+const log = @import("logs.zig");
 
-pub usingnamespace @import("logs.zig");
+pub usingnamespace log;
 
-pub fn main() !void {
-  var server = zap.HttpListener.init(.{
-    .port = 8888,
-    .on_request = onRequest,
-  });
-  try server.listen();
+allocator: std.mem.Allocator,
 
-  zap.start(.{.threads = 1, .workers = 1});
+pub fn init(allocator: std.mem.Allocator) Self {
+  return .{
+    .allocator = allocator,
+  };
 }
 
-fn onRequest(req: zap.Request) void {
-  req.setContentType(.HTML) catch |e| std.log.err("{}\n", .{e});
-  req.sendBody("<html><body><h1>Battle Snakes</h1></body></html>") catch |e| std.log.err("{}\n", .{e});
+pub fn main() !void {
+  var gpa = std.heap.GeneralPurposeAllocator(.{}).init;
+  defer _ = gpa.deinit();
+  defer _ = gpa.detectLeaks();
+  // const allocator = gpa.allocator();
+
+  // var app = init(allocator);
+
+  // var server = try
 }

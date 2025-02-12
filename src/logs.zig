@@ -4,6 +4,11 @@ pub const std_options = std.Options {
   .logFn = log,
 };
 
+pub const d = std.log.debug;
+pub const i = std.log.info;
+pub const w = std.log.warn;
+pub const e = std.log.err;
+
 fn log(
   comptime lvl: std.log.Level,
   comptime src: @Type(.enum_literal),

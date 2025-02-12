@@ -4,8 +4,7 @@ pub fn build(b: *std.Build) void {
   const target = b.standardTargetOptions(.{});
   const optimize = b.standardOptimizeOption(.{});
 
-  const main_exe = b.addExecutable(.{
-    .name = "main",
+  const main_mod = b.createModule(.{
     .target = target,
     .optimize = optimize,
     .root_source_file = b.path("src/main.zig"),
@@ -16,7 +15,12 @@ pub fn build(b: *std.Build) void {
     .optimize = optimize,
   });
 
-  main_exe.root_module.addImport("web", http_dep.module("httpz"));
+  main_mod.addImport("web", http_dep.module("httpz"));
+
+  const main_exe = b.addExecutable(.{
+    .name = "main",
+    .root_module = main_mod
+  });
 
   b.installArtifact(main_exe);
 }

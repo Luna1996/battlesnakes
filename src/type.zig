@@ -39,6 +39,8 @@ pub const Settings = struct {
   foodSpawnChance:        i32 = 0,
   minimumFood:            i32 = 0,
   hazardDamagePerTurn:    i32 = 0,
+  hazardMap:       []const u8 = "",
+  hazardMapAuthor: []const u8 = "",
   royale: struct {
     shrinkEveryNTurns:    i32 = 0,
   } = .{},

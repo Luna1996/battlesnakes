@@ -25,16 +25,16 @@ pub fn main() !void {
   defer server.deinit();
 
   var router = server.router(.{});
-  inline for (std.enums.values(t.Mind)) |mind| {
+  inline for (comptime std.enums.values(t.Mind)) |mind| {
     var sub_router = router.group("/" ++ @tagName(mind), .{.data = &mind});
     try sub_router.tryGet ("/",      onPing,  .{});
     try sub_router.tryPost("/move",  onMove,  .{});
   }
 
+  log.i("http://localhost:{}", .{PORT});
+
   try server.listen();
   defer server.stop();
-
-  log.i("http://localhost:{}", .{PORT});
 }
 
 pub fn onPing(req: *web.Request, res: *web.Response) !void {

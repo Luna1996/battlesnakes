@@ -26,6 +26,9 @@ fn log(
   var bw = std.io.bufferedWriter(stdout);
   const writer = bw.writer();
 
+  std.Progress.lockStdErr();
+  defer std.Progress.unlockStdErr();
+
   nosuspend {
       writer.print(lvl_txt ++ src_txt ++ fmt ++ "\n\x1b[0m", arg) catch return;
       bw.flush() catch return;

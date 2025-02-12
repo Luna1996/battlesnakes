@@ -53,28 +53,36 @@ pub const Settings = struct {
 };
 
 pub const Snake = struct {
-  id:      []const u8  = "",
-  name:    []const u8  = "",
-  health:  i32         = 0,
-  body:    []const Pos = &.{},
-  latency: []const u8  = "",
-  head:    Pos         = .{0, 0},
-  length:  i32         = 0,
-  shout:   []const u8  = "",
-  squad:   []const u8  = "",
-  customization: struct {
-    color: []const u8  = "",
-    head:  []const u8  = "",
-    tail:  []const u8  = "",
+  id:      []const u8 = "",
+  name:    []const u8 = "",
+  health:  i32        = 0,
+  body:    []const XY = &.{},
+  latency: []const u8 = "",
+  head:    XY         = .{},
+  length:  i32        = 0,
+  shout:   []const u8 = "",
+  squad:   []const u8 = "",
+  customizations: struct {
+    color: []const u8 = "",
+    head:  []const u8 = "",
+    tail:  []const u8 = "",
   } = .{},
 };
 
 pub const Board = struct {
   height:  i32           = 0,
   width:   i32           = 0,
-  food:    []const Pos   = &.{},
-  hazards: []const Pos   = &.{},
+  food:    []const XY    = &.{},
+  hazards: []const XY    = &.{},
   snakes:  []const Snake = &.{}
+};
+
+pub const XY = struct {
+  x: i32 = 0, y: i32 = 0,
+
+  pub fn pos(self: XY) Pos {
+    return .{self.x, self.y};
+  }
 };
 
 pub const Pos = @Vector(2, i32);

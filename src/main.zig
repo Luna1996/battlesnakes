@@ -46,7 +46,10 @@ pub fn onPing(req: *web.Request, res: *web.Response) !void {
 
 pub fn onMove(req: *web.Request, res: *web.Response) !void {
   const mind = try getMind(req);
-  const info = (try req.json(t.Info)) orelse return error.NoInfo;
+  const info = (req.json(t.Info) catch |e| {
+    log.e("{s}", .{req.body().?});
+    return e;
+  }) orelse return error.NoInfo;
   const move = try mind.onMove(req.arena, info);
   try res.json(move, .{.emit_null_optional_fields = false});
   res.status = 200;

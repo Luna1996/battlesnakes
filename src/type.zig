@@ -11,7 +11,7 @@ pub const Ping = struct {
 
 pub const Info = struct {
   game:  Game  = .{},
-  turn:  i32   = 0,
+  turn:  u32   = 0,
   board: Board = .{},
   you:   Snake = .{},
 };
@@ -36,13 +36,13 @@ pub const RuleSet = struct {
 };
 
 pub const Settings = struct {
-  foodSpawnChance:        i32 = 0,
-  minimumFood:            i32 = 0,
-  hazardDamagePerTurn:    i32 = 0,
+  foodSpawnChance:        u32 = 0,
+  minimumFood:            u32 = 0,
+  hazardDamagePerTurn:    u32 = 0,
   hazardMap:       []const u8 = "",
   hazardMapAuthor: []const u8 = "",
   royale: struct {
-    shrinkEveryNTurns:    i32 = 0,
+    shrinkEveryNTurns:    u32 = 0,
   } = .{},
   squad: struct {
     allowBodyCollisions: bool = false,

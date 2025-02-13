@@ -5,6 +5,7 @@ const t = @import("type.zig");
 
 pub usingnamespace log;
 
+const ADDR = "0.0.0.0";
 const PORT = 8888;
 const INFO = t.Ping {
   .author  = "Luna1996",
@@ -21,7 +22,10 @@ pub fn main() !void {
 
   const allocator = gpa.allocator();
 
-  var server = try web.Server(void).init(allocator, .{.port = PORT}, {});
+  var server = try web.Server(void).init(allocator, .{
+    .address = "0.0.0.0",
+    .port = PORT
+  }, {});
   defer server.deinit();
 
   var router = server.router(.{});
@@ -29,9 +33,9 @@ pub fn main() !void {
     var sub_router = router.group("/" ++ @tagName(mind), .{.data = &mind});
     try sub_router.tryGet ("/",      onPing,  .{});
     try sub_router.tryPost("/move",  onMove,  .{});
+    log.i("http://{s}:{}/{s}", .{ADDR, PORT, @tagName(mind)});
   }
 
-  log.i("http://localhost:{}", .{PORT});
 
   try server.listen();
   defer server.stop();

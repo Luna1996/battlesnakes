@@ -2,14 +2,14 @@
   "version": "0.2.0",
   "configurations": [
     {
-      "type": "gdb",
-      "request": "launch",
       "name": "Main",
-      "target": "./zig-out/bin/main",
-      "cwd": "${workspaceRoot}",
-      "valuesFormatting": "parseText",
+      "type": "f5anything",
+      "request": "launch",
+      "command": "./zig-out/bin/main",
+      "terminalName": "battlesnakes",
+      "terminalIndex": -1,
+      "showTerminal": true,
       "preLaunchTask": "build",
-      "internalConsoleOptions": "openOnSessionStart",
     },
   ]
 }

@@ -1,13 +1,14 @@
 const std = @import("std");
 const web = @import("web");
 const log = @import("logs.zig");
+const j = @import("type_json.zig");
 const t = @import("type.zig");
 
 pub usingnamespace log;
 
 const ADDR = "0.0.0.0";
 const PORT = 8888;
-const INFO = t.Ping {
+const INFO = j.Ping {
   .author  = "Luna1996",
   .color   = "#00CC00",
   .head    = "pixel",
@@ -33,7 +34,7 @@ pub fn main() !void {
     var sub_router = router.group("/" ++ @tagName(mind), .{.data = &mind});
     try sub_router.tryGet ("/",      onPing,  .{});
     try sub_router.tryPost("/move",  onMove,  .{});
-    log.i("http://{s}:{}/{s}", .{ADDR, PORT, @tagName(mind)});
+    log.i("http://localhost:{}/{s}", .{PORT, @tagName(mind)});
   }
 
 
@@ -50,7 +51,7 @@ pub fn onPing(req: *web.Request, res: *web.Response) !void {
 
 pub fn onMove(req: *web.Request, res: *web.Response) !void {
   const mind = try getMind(req);
-  const info = (req.json(t.Info) catch |e| {
+  const info = (req.json(j.Info) catch |e| {
     log.e("{s}", .{req.body().?});
     return e;
   }) orelse return error.NoInfo;

@@ -1,6 +1,6 @@
 const std = @import("std");
-const t   = @import("type.zig");
+const j   = @import("type_json.zig");
 
-pub fn onMove(_: std.mem.Allocator, info: t.Info) !t.Move {
+pub fn onMove(_: std.mem.Allocator, info: j.Info) !j.Move {
   return .{.move = @enumFromInt(info.turn % 4)};
 }

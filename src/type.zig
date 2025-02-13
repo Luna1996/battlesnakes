@@ -1,89 +1,5 @@
 const std = @import("std");
-
-pub const Ping = struct {
-  apiversion: []const u8 = "1",
-  author:    ?[]const u8 = null,
-  color:     ?[]const u8 = null,
-  head:      ?[]const u8 = null,
-  tail:      ?[]const u8 = null,
-  version:   ?[]const u8 = null,
-};
-
-pub const Info = struct {
-  game:  Game  = .{},
-  turn:  u32   = 0,
-  board: Board = .{},
-  you:   Snake = .{},
-};
-
-pub const Move = struct {
-  move:   Dir        = .up,
-  shout: ?[]const u8 = null,
-};
-
-pub const Game = struct {
-  id:      []const u8 = "",
-  ruleset: RuleSet    = .{},
-  map:     []const u8 = "",
-  timeout: i32        = 0,
-  source:  []const u8 = "",
-};
-
-pub const RuleSet = struct {
-  name:     []const u8 = "",
-  version:  []const u8 = "",
-  settings: Settings   = .{},
-};
-
-pub const Settings = struct {
-  foodSpawnChance:        u32 = 0,
-  minimumFood:            u32 = 0,
-  hazardDamagePerTurn:    u32 = 0,
-  hazardMap:       []const u8 = "",
-  hazardMapAuthor: []const u8 = "",
-  royale: struct {
-    shrinkEveryNTurns:    u32 = 0,
-  } = .{},
-  squad: struct {
-    allowBodyCollisions: bool = false,
-    sharedElimination:   bool = false,
-    sharedHealth:        bool = false,
-    sharedLength:        bool = false,
-  } = .{},
-};
-
-pub const Snake = struct {
-  id:      []const u8 = "",
-  name:    []const u8 = "",
-  health:  i32        = 0,
-  body:    []const XY = &.{},
-  latency: []const u8 = "",
-  head:    XY         = .{},
-  length:  i32        = 0,
-  shout:   []const u8 = "",
-  squad:   []const u8 = "",
-  customizations: struct {
-    color: []const u8 = "",
-    head:  []const u8 = "",
-    tail:  []const u8 = "",
-  } = .{},
-};
-
-pub const Board = struct {
-  height:  i32           = 0,
-  width:   i32           = 0,
-  food:    []const XY    = &.{},
-  hazards: []const XY    = &.{},
-  snakes:  []const Snake = &.{}
-};
-
-pub const XY = struct {
-  x: i32 = 0, y: i32 = 0,
-
-  pub fn pos(self: XY) Pos {
-    return .{self.x, self.y};
-  }
-};
+const j = @import("type_json.zig");
 
 pub const Pos = @Vector(2, i32);
 
@@ -107,9 +23,20 @@ pub const Map = enum {
 pub const Mind = enum {
   basic,
 
-  pub fn onMove(mind: Mind, allocator: std.mem.Allocator, info: Info) !Move {
+  pub fn onMove(mind: Mind, allocator: std.mem.Allocator, info: j.Info) !j.Move {
     return switch (mind) {
       .basic => try @import("mind_basic.zig").onMove(allocator, info),
     };
   }
 };
+
+pub const Item = struct {
+  cell: union(enum) { empty, hazard },
+  what: union(enum) { empty, food, snake_body, snake_head: u16 },
+
+  pub const empty: Item = .{.cell = .empty, .what = .empty};
+};
+
+pub const Grid = [][]Item;
+
+pub const DMap = [][]u32;
